@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+
+
+import {Routes, Route} from 'react-router-dom';
+import  Home  from './compo/Home';
+import  Login   from './compo/Login'
+import { ProtectedRoute } from './compo/ProtectedRoute';
+import  Register  from './compo/Register';
+import { AuthProvider,} from './context/authContext';
+import { ResetPassword } from "./compo/ResetP";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     <div className='bg-sky-700 h-screen flex' >
+      <AuthProvider>
+      <Routes>
+        <Route path="/" element={
+          <ProtectedRoute>
+              <Home />
+          </ProtectedRoute>
+        } />
+        <Route path="/resetpassword" element={<ResetPassword/>} />
+        <Route path= "/login" element= {<Login/>} />
+        <Route path= "/register" element= {<Register/>} />
+      </Routes>
+    </AuthProvider>
+    
+
     </div>
+
+
   );
+ 
 }
 
-export default App;
+export default App
