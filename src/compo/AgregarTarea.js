@@ -1,12 +1,13 @@
 import React from 'react'
-import { app, } from "../firebase";
+import { app} from "../firebase";
 import { getFirestore, updateDoc , doc } from "firebase/firestore";
 
 const firestore = getFirestore(app);
 
-export const AgregarTarea = ({ correoUsuario, setArrayTareas, arrayTareas}) => {
-
+export const AgregarTarea = ({ correoUsuario, setArrayTareas, arrayTareas,}) => {
+  
   async function añadirTarea(e) {
+    
     e.preventDefault();
     // crear nuevo array de tareas
     const descripcion = e.target.formDescripcion.value;
@@ -18,6 +19,8 @@ export const AgregarTarea = ({ correoUsuario, setArrayTareas, arrayTareas}) => {
        
   },
   ];
+  
+ 
   // actualizar base de datos
   const docuRef= doc(firestore,`usuarios/${correoUsuario}`);
   updateDoc(docuRef,{ tareas: [...nvoArrayTareas] });
@@ -26,10 +29,11 @@ export const AgregarTarea = ({ correoUsuario, setArrayTareas, arrayTareas}) => {
   //limpiar form
   e.target.formDescripcion.value = '';
   }
-
+  
   return (
     <div>
       <form
+      
       onSubmit={añadirTarea} >
         <row>
       <input 
@@ -49,7 +53,7 @@ export const AgregarTarea = ({ correoUsuario, setArrayTareas, arrayTareas}) => {
   
 </select> 
 
-        <button type='submit' className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ml-2 mt-2' > AgregarTarea </button>
+        <button type='submit' className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 ml-2 mt-2'> AgregarTarea </button>
       </row>
       </form>
     </div>
