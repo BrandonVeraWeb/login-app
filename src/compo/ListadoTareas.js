@@ -3,6 +3,7 @@ import { app } from "../firebase";
 import { getFirestore,updateDoc,doc, } from "firebase/firestore";
 import Tarea from './Tarea';
 
+
 const firestore = getFirestore(app)
 
  export const ListadoTareas = ({ arrayTareas, setArrayTareas, correoUsuario, editando, setEditando, tareaEditar, setTareaEditar}) => {
@@ -11,6 +12,7 @@ const firestore = getFirestore(app)
     //crear nuevo array de tareas
   const nvoArrayTareas = arrayTareas.filter(
     (objetoTarea) => objetoTarea.id !== idTareaAElminar
+    
   );
   //actualizar base de datos
   const docuRef = doc(firestore, `usuarios/${correoUsuario}`);
@@ -23,12 +25,19 @@ const firestore = getFirestore(app)
     setEditando(true);
     let formDescripcion = document.querySelector("#formDescripcion");
     formDescripcion.value = objetoTarea.descripcion;
+
+    let tareaId = document.querySelector("#tareaIdTag");
+    tareaId.innerHTML = objetoTarea.id;
+
   }
   
   return (
     <div>
-            {arrayTareas.map((objetoTarea) => {
+            {arrayTareas.map((objetoTarea, index) => {
+
+
                 return (
+                  
                     <Tarea
                         objetoTarea={objetoTarea}
                         eliminarTarea={eliminarTarea}
@@ -36,7 +45,8 @@ const firestore = getFirestore(app)
                         editando={editando}
                     />
                 );
-            })}
+            }
+            )}
         </div>
     );
 };

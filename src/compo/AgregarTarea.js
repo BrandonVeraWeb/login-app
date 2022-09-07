@@ -1,6 +1,6 @@
 import React from 'react'
 import { app} from "../firebase";
-import { getFirestore, updateDoc , doc } from "firebase/firestore";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
 
 
 
@@ -34,12 +34,38 @@ export const AgregarTarea = ({ correoUsuario, setArrayTareas, arrayTareas, edita
 
   async function editarTarea(e) {
     e.preventDefault();
-    const washingtonRef = doc(firestore,"usuarios");
+    function actualizarTarea(tareas, idTarea, nuevaData){
+      const nuevasTareas = tareas.map((tarea) => {
+          if(tarea.id != idTarea) return tarea    
+        
+        return {
+            ...tarea,
+            ...nuevaData
+          } 
+    })
+      
+      return nuevasTareas
+    }
+    
+    
         
     const descripcion = document.getElementById('formDescripcion').value;
-    updateDoc(washingtonRef, {
-       descripcion: descripcion
-    });  
+    const state = document.getElementById('selectEstado').value;
+    const tareaId = document.getElementById('tareaIdTag').textContent;
+
+    const tareas = actualizarTarea(arrayTareas, tareaId, { descripcion, state })
+
+    
+    try {
+      // actualizar datos en firebase
+      const tareaRef = doc(firestore,'usuarios', correoUsuario);
+      await updateDoc(tareaRef, { tareas }); 
+      // actualizar el estado 
+      setArrayTareas(tareas)
+      // throw new Error() // forzar un error
+    } catch (error) {
+      alert('Ha ocurrido un error al actualizar la tarea')
+    }
   }
 
   const cancelarEdicion = async (e) => {
@@ -78,6 +104,7 @@ export const AgregarTarea = ({ correoUsuario, setArrayTareas, arrayTareas, edita
           )}
         </row>
       </form> 
+      <p id="tareaIdTag" style={{display: 'none'}} ></p>
     </>
   )
 };

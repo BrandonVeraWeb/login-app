@@ -58,7 +58,7 @@ export function Home() {
     }
     
   };
-  console.log(auth)
+  
   if (loading) return <h1>loading</h1>  
   // mt-0 ml-4 py-4
   return (
