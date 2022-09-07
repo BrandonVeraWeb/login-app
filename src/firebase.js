@@ -1,7 +1,7 @@
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from 'firebase/auth';
-import { updateDoc,doc } from "firebase/firestore";
+
 
 
 const firebaseConfig = {
@@ -16,4 +16,3 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const updateTask = (id,newfields)=>updateDoc( doc (app, 'tareas', id),newfields);

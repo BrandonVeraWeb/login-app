@@ -11,11 +11,13 @@ import { app, auth } from '../firebase';
 export function Home() {
   
   const { user, logout, loading, } = useAuth();
-  
+  const [ editando, setEditando ] = useState(false);
+  const [ tareaEditar, setTareaEditar ] = useState("");
+
   
   const firestore = getFirestore(app);
   
-  const [ arrayTareas , setArrayTareas] = useState (null);
+  const [ arrayTareas , setArrayTareas] = useState ([]);
   const fakeData =[
     { id:1 ,descripcion:'Crea todas tus tareas aqui',url:'https://picsum.photos/420' },
     
@@ -36,15 +38,15 @@ export function Home() {
         return infoDocu.tareas;
       }
     }
+
+    async function fetchTareas() {
+      const tareasFetchadas = await buscarDocumentOrCrearDocumento(
+        user.email
+      );
+      setArrayTareas(tareasFetchadas);
+    }
   
     useEffect(() => {
-      async function fetchTareas() {
-        const tareasFetchadas = await buscarDocumentOrCrearDocumento(
-          user.email
-        );
-        setArrayTareas(tareasFetchadas);
-      }
-  
       fetchTareas();
     }, []);
      
@@ -69,12 +71,14 @@ export function Home() {
     
       <hr />
       <AgregarTarea
-      arrayTareas ={arrayTareas} 
-      setArrayTareas={setArrayTareas} 
-      correoUsuario={user.email}
-      
+        arrayTareas ={arrayTareas} 
+        setArrayTareas={setArrayTareas} 
+        correoUsuario={user.email}
+        editando={editando} setEditando={setEditando} tareaEditar={tareaEditar} setTareaEditar={setTareaEditar}
       />
-      {arrayTareas ?<ListadoTareas arrayTareas ={arrayTareas} setArrayTareas={setArrayTareas} correoUsuario={user.email}/>:null}
+      {arrayTareas ?<ListadoTareas arrayTareas ={arrayTareas} setArrayTareas={setArrayTareas} correoUsuario={user.email}
+                     editando={editando} setEditando={setEditando} tareaEditar={tareaEditar} setTareaEditar={setTareaEditar}
+                    />:null}
     
     </div>
   </div>

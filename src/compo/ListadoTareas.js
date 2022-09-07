@@ -5,10 +5,7 @@ import Tarea from './Tarea';
 
 const firestore = getFirestore(app)
 
- export const ListadoTareas = ({ arrayTareas, setArrayTareas, correoUsuario  }) => {
-  const [editando,setEditando] = useState(false);
-  const [tareaEditar, setTareaEditar] = useState("");
-
+ export const ListadoTareas = ({ arrayTareas, setArrayTareas, correoUsuario, editando, setEditando, tareaEditar, setTareaEditar}) => {
 
   async function eliminarTarea(idTareaAElminar) {
     //crear nuevo array de tareas
