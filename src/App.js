@@ -10,7 +10,7 @@ import { ResetPassword } from "./compo/ResetP";
 
 function App() {
   return (
-     <div className='bg-sky-700 h-screen flex' >
+     <div className='bg-sky-700 min-h-screen flex' >
       <AuthProvider>
       <Routes>
         <Route path="/" element={
