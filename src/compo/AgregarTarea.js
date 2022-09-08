@@ -34,17 +34,25 @@ export const AgregarTarea = ({ correoUsuario, setArrayTareas, arrayTareas, edita
 
   async function editarTarea(e) {
     e.preventDefault();
+    
     function actualizarTarea(tareas, idTarea, nuevaData){
       const nuevasTareas = tareas.map((tarea) => {
           if(tarea.id != idTarea) return tarea    
-        
+          setEditando(false);
+          let formDescripcion = document.querySelector("#formDescripcion");
+          formDescripcion.value = "";
+          let state = document.querySelector("#selectEstado");
+          state.value = "";
         return {
             ...tarea,
             ...nuevaData
           } 
+          
     })
       
-      return nuevasTareas
+      return nuevasTareas 
+      
+      
     }
     
     
