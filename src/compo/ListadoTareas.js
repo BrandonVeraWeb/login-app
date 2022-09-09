@@ -39,6 +39,8 @@ const firestore = getFirestore(app)
                 return (
                   
                     <Tarea
+
+                      arrayTareas={arrayTareas}
                         objetoTarea={objetoTarea}
                         eliminarTarea={eliminarTarea}
                         editarTarea={editarTarea}

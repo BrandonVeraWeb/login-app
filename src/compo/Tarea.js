@@ -1,6 +1,18 @@
 import React from "react";
 
-export default function Tarea({ objetoTarea, eliminarTarea, editarTarea, editando }) {
+export default function Tarea({ arrayTareas ,objetoTarea, eliminarTarea, editarTarea, editando }) {
+    const stylesPastillaEstado = {
+        "pendiente": "text-white bg-gray-500 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900",
+        "proceso": "text-white bg-yellow-500 hover:bg-yellow-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900",
+        "terminado": "text-white bg-green-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+    }
+
+    const state = {
+        terminado: "Terminado",
+        proceso: "Proceso",
+        pendiente: "Pendiente"
+    }
+   
     return (
         <div
             className="inline-flex rounded-md shadow-sm m-2 block p-6 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
@@ -14,9 +26,9 @@ export default function Tarea({ objetoTarea, eliminarTarea, editarTarea, editand
                     {" "}
                     {objetoTarea.descripcion}
                 </div>
-                <p className="text-white bg-gray-500 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                <div className={objetoTarea.state === state.pendiente ? stylesPastillaEstado.pendiente : objetoTarea.state === state.terminado ? stylesPastillaEstado.terminado : stylesPastillaEstado.proceso}>
                     {objetoTarea.state}
-                </p>
+                </div>
 
                 <div className="mt-2 mb-2"></div>
                 <div className="inline-flex rounded-md shadow-sm">
