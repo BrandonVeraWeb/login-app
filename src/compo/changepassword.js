@@ -1,17 +1,8 @@
-import { useAuth } from "../context/authContext"
-import {
-    updatePassword,
-    getAuth,
-    EmailAuthCredential,
-    onAuthStateChanged,
-    signOut,
-} from "firebase/auth"
-import { useState } from "react"
-import React from "react"
+import { updatePassword, getAuth, signOut } from "firebase/auth"
+import React, { useState } from "react"
 import { customForm } from "../utils"
-import { async } from "@firebase/util"
 import { auth } from "../firebase"
-import { Alert } from "./Alert"
+
 // function customForm(event) {
 //     event.preventDefault();
 
@@ -20,32 +11,44 @@ import { Alert } from "./Alert"
 function PasswordChange() {
     const logout = () => signOut(auth)
 
-    const handlelogout = async () => {
-        try {
-            await logout()
-        } catch (error) {
-            console.error(error)
-        }
-    }
+    const [newPasswordCurrent, setNewPasswordCurrent] = useState({
+        newPasswordCurrent: "",
+    })
+
+    const [newPasswordConfirm, setNewPasswordConfirm] = useState({
+        newPasswordConfirm: "",
+    })
+
+    const handleGap = ({ target: { name, value } }) =>
+        setNewPasswordCurrent({ ...newPasswordCurrent, [name]: value })
+    const handleNew = ({ target: { name, value } }) =>
+        setNewPasswordConfirm({ ...newPasswordConfirm, [name]: value })
+
+    console.log(newPasswordCurrent)
+    console.log(newPasswordConfirm)
     const handleSubmit = (event) => {
         const auth = getAuth()
         const user = auth.currentUser
         const updatePasswordForm = customForm(event)
         const newPasswordCurrent = updatePasswordForm.get("newPasswordCurrent")
         const newPasswordConfirm = updatePasswordForm.get("newPasswordConfirm")
-        const oldPassword = updatePasswordForm.get("oldPassword") // Verificar que las dos newPassword sean iguales sino error
+        // const oldPassword = updatePasswordForm.get("oldPassword") // Verificar que las dos newPassword sean iguales sino error
+
+        // if (x !== oldPassword) {
+        //     return alert("tu password no es igual a la actual")
+        // }
 
         if (newPasswordCurrent !== newPasswordConfirm) {
             return alert("Las password no son iguales")
         }
-        if (oldPassword === newPasswordCurrent) {
-            return alert("Tu password no puede ser igual a la anterior")
-        }
+        // if (oldPassword === newPasswordCurrent) {
+        //     return alert("Tu password no puede ser igual a la anterior")
+        // }
         // Verificar que la old password y new password sean diferente sino error
 
         updatePassword(user, newPasswordCurrent)
             .then(() => {
-                console.log("Password actualizada para el usuario: ")
+                alert("Password Was Change")
                 try {
                     logout()
                 } catch (error) {
@@ -53,8 +56,12 @@ function PasswordChange() {
                 }
             })
             .catch((error) => {
+                try {
+                    alert("Debes iniciar sesion para cambiar tu password")
+                    logout()
+                } catch (error) {}
                 console.log(error)
-                console.log("no funciono esa monda")
+                console.log("Hay un problema")
             })
     }
 
@@ -63,13 +70,13 @@ function PasswordChange() {
             <>
                 <div className="w-full max-w-xs m-auto">
                     <label className="block text-gray-700 text-sm font-bold my-2"></label>
-                    <input
+                    {/* <input
                         className="display:block;shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tighy focus:outline-none focus:shadow-outline mt-5"
                         type="password"
                         placeholder="Old-Password"
                         name="oldPassword"
                         required
-                    />
+                    /> */}
                     <label className="block text-gray-700 text-sm font-bold my-2"></label>
                     <input
                         className="display:block;shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tighy focus:outline-none focus:shadow-outline mt-5"
@@ -77,6 +84,7 @@ function PasswordChange() {
                         placeholder="New-Password"
                         required
                         name="newPasswordCurrent"
+                        onChange={handleGap}
                     />
                     <label className="block text-gray-700 text-sm font-bold my-2"></label>
                     <input
@@ -86,6 +94,7 @@ function PasswordChange() {
                         placeholder="New-Password-Confirm"
                         required
                         name="newPasswordConfirm"
+                        onChange={handleNew}
                     />
                     <label className="block text-gray-700 text-sm font-bold my-2"></label>
                     <button
