@@ -10,22 +10,6 @@ import { auth } from "../firebase"
 
 function PasswordChange() {
     const logout = () => signOut(auth)
-
-    const [newPasswordCurrent, setNewPasswordCurrent] = useState({
-        newPasswordCurrent: "",
-    })
-
-    const [newPasswordConfirm, setNewPasswordConfirm] = useState({
-        newPasswordConfirm: "",
-    })
-
-    const handleGap = ({ target: { name, value } }) =>
-        setNewPasswordCurrent({ ...newPasswordCurrent, [name]: value })
-    const handleNew = ({ target: { name, value } }) =>
-        setNewPasswordConfirm({ ...newPasswordConfirm, [name]: value })
-
-    console.log(newPasswordCurrent)
-    console.log(newPasswordConfirm)
     const handleSubmit = (event) => {
         const auth = getAuth()
         const user = auth.currentUser
@@ -84,7 +68,6 @@ function PasswordChange() {
                         placeholder="New-Password"
                         required
                         name="newPasswordCurrent"
-                        onChange={handleGap}
                     />
                     <label className="block text-gray-700 text-sm font-bold my-2"></label>
                     <input
@@ -94,7 +77,6 @@ function PasswordChange() {
                         placeholder="New-Password-Confirm"
                         required
                         name="newPasswordConfirm"
-                        onChange={handleNew}
                     />
                     <label className="block text-gray-700 text-sm font-bold my-2"></label>
                     <button
