@@ -8,6 +8,7 @@ import { ResetPassword } from "./compo/ResetP"
 import NavBar from "./utils/Navbar"
 import { useState } from "react"
 import { DisplayName } from "./compo/DisplayName"
+import ChangeEmail from "./compo/NewEmail"
 function App() {
     return (
         <div>
@@ -29,7 +30,22 @@ function App() {
                         />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
-                        <Route path="/displayName" element={<DisplayName />} />
+                        <Route
+                            path="/displayName"
+                            element={
+                                <ProtectedRoute>
+                                    <DisplayName />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/changeEmail"
+                            element={
+                                <ProtectedRoute>
+                                    <ChangeEmail />
+                                </ProtectedRoute>
+                            }
+                        />
                     </Routes>
                 </AuthProvider>
             </div>

@@ -1,25 +1,35 @@
 import React, { useState } from "react"
 import { getAuth, updateProfile } from "firebase/auth"
+import { useNavigate } from "react-router-dom"
 
 export function DisplayName() {
+    const navigate = useNavigate()
     const [newDisplayName, setNewDisplayName] = useState()
     const auth = getAuth()
     const handleChange = (e) => {
         setNewDisplayName(e.target.value)
     }
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        updateProfile(auth.currentUser, {
-            displayName: newDisplayName,
-        })
-            .then(() => {
-                // Profile updated!
-                // ...
+        try {
+            await updateProfile(auth.currentUser, {
+                displayName: newDisplayName,
             })
-            .catch((error) => {
-                // An error occurred
-                // ...
-            })
+                .then(() => {
+                    alert(`WELCOME ${newDisplayName}`)
+                })
+                .catch((error) => {
+                    // An error occurred
+                    // ...
+                })
+            navigate("/")
+        } catch (error) {
+            alert("Intente nuevamente ingresar Su nombre")
+        }
+    }
+    const handleCancelClick = () => {
+        navigate("/")
     }
 
     return (
@@ -30,10 +40,10 @@ export function DisplayName() {
                         <div className="block text-gray-700 text-lg font-bold my-2 pb-5 mb-5 ">
                             <form
                                 onSubmit={handleSubmit}
-                                className="bg-gray-100 shadow-md rounded px-8 pt-6 pb-8 mb-4"
+                                className="bg-gray-100 border-2 shadow-md rounded px-8 pt-6 pb-8 mb-4"
                             >
                                 <label className="block text-gray-700 font-bold">
-                                    DisplayName
+                                    YOUR NEW NAME
                                     <div className="mb-4">
                                         <input
                                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -43,11 +53,18 @@ export function DisplayName() {
                                         ></input>
                                     </div>
                                 </label>
+
                                 <button
                                     className="bg-blue-500 hover:bg-blue-700 text-white shadow-md rounded border-2 border-gray-300 py-2 px-4 w-full"
                                     type="submit"
                                 >
                                     Continuar
+                                </button>
+                                <button
+                                    className="bg-red-500 hover:bg-red-700 text-white shadow-md rounded border-2 border-gray-300 py-2 px-4 w-full"
+                                    onClick={handleCancelClick}
+                                >
+                                    Back
                                 </button>
                             </form>
                         </div>
