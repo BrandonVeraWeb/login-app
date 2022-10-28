@@ -25,7 +25,7 @@ export function Login() {
             navigate("/")
             setError("Loading")
         } catch (error) {
-            setError(error.message)
+            setError("Email or Password Invalid")
         }
     }
 

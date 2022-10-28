@@ -20,7 +20,6 @@ export function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError("Loading, Ya puedes iniciar sesion")
-        alert("Bienvenido")
         try {
             await signup(user.email, user.password)
             navigate("/displayName")

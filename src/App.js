@@ -9,6 +9,7 @@ import NavBar from "./utils/Navbar"
 import { useState } from "react"
 import { DisplayName } from "./compo/DisplayName"
 import ChangeEmail from "./compo/NewEmail"
+import { PasswordChange } from "./compo/PasswordChange"
 function App() {
     return (
         <div>
@@ -43,6 +44,14 @@ function App() {
                             element={
                                 <ProtectedRoute>
                                     <ChangeEmail />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/changePassword"
+                            element={
+                                <ProtectedRoute>
+                                    <PasswordChange />
                                 </ProtectedRoute>
                             }
                         />

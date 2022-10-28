@@ -19,6 +19,9 @@ export default function Navbar({ fixed }) {
     const handleEmail = () => {
         navigation("/changeEmail")
     }
+    const handlePassword = () => {
+        navigation("/changePassword")
+    }
 
     return (
         <>
@@ -91,9 +94,12 @@ export default function Navbar({ fixed }) {
                             </span>
                             <div className="absolute hidden group-focus:block top-full min-w-full w-max bg-sky-600 shadow-md mt-1 rounded ">
                                 <ul className="text-left border rounded ">
-                                    <li className="px-4 py-1 hover:bg-gray-100 border-b">
+                                    <li
+                                        className="px-4 py-1 hover:bg-gray-100 border-b"
+                                        onClick={handlePassword}
+                                    >
                                         {" "}
-                                        MENU LIST
+                                        CHANGE PASSWORD
                                     </li>
                                     <li
                                         onClick={handleEmail}
