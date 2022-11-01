@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { getAuth, updateProfile } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
-
+import { Alert } from "./Alert"
 export function DisplayName() {
     const navigate = useNavigate()
     const [newDisplayName, setNewDisplayName] = useState()
@@ -9,23 +9,25 @@ export function DisplayName() {
     const handleChange = (e) => {
         setNewDisplayName(e.target.value)
     }
-
+    const [error, setError] = useState()
     const handleSubmit = async (e) => {
         e.preventDefault()
+        setError(`WELCOME ${newDisplayName}`)
+        setTimeout(4000)
         try {
             await updateProfile(auth.currentUser, {
                 displayName: newDisplayName,
             })
                 .then(() => {
-                    alert(`WELCOME ${newDisplayName}`)
+                    setError(`WELCOME ${newDisplayName}`)
                 })
                 .catch((error) => {
-                    // An error occurred
-                    // ...
+                    console.log(error)
                 })
             navigate("/")
         } catch (error) {
-            alert("Intente nuevamente ingresar Su nombre")
+            setError("Intente nuevamente ingresar Su nombre")
+            console.log(error)
         }
     }
     const handleCancelClick = () => {
@@ -38,6 +40,7 @@ export function DisplayName() {
                 <div className="flex h-screen justify-center items-center">
                     <div className="bg-gray-100 flex-col justify-center bg-white py-12 px-24 border-4 border-sky-900 rounded-xl">
                         <div className="block text-gray-700 text-lg font-bold my-2 pb-5 mb-5 ">
+                            {error && <Alert message={error} />}
                             <form
                                 onSubmit={handleSubmit}
                                 className="bg-gray-100 border-2 shadow-md rounded px-8 pt-6 pb-8 mb-4"

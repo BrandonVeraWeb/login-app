@@ -20,9 +20,11 @@ export function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError("Loading, Ya puedes iniciar sesion")
+        setTimeout(4000)
         try {
             await signup(user.email, user.password)
             navigate("/displayName")
+            await setError("Loading, Ya puedes iniciar sesion")
         } catch (error) {
             setError(error.message)
         }

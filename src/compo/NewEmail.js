@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { getAuth, updateEmail } from "firebase/auth"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/authContext"
-
+import { Alert } from "./Alert"
 export function ChangeEmail() {
     const { user, logout } = useAuth()
     const [newEmail, setNewEmail] = useState()
@@ -12,20 +12,23 @@ export function ChangeEmail() {
     const navigation = useNavigate()
     const auth = getAuth()
     const email = user.email
+    const [error, setError] = useState()
+
     const handleSubmit = (e) => {
         e.preventDefault()
         if (email === newEmail) {
-            return alert("TU CORREO NO PUEDE SER IGUAL QUE EL ANTERIOR ")
+            return setError("TU CORREO NO PUEDE SER IGUAL QUE EL ANTERIOR ")
         }
         updateEmail(auth.currentUser, newEmail)
             .then(() => {
                 try {
-                    alert("TU CORREO HA SIDO CAMBIADO")
+                    setError("TU CORREO HA SIDO CAMBIADO")
+
                     logout()
                 } catch (error) {}
             })
             .catch((error) => {
-                console.log("no funciona")
+                setError("Debes Loguearte Nuevamente")
             })
     }
     const handleCancelClick = () => {
@@ -36,6 +39,7 @@ export function ChangeEmail() {
             <div className="flex h-screen justify-center items-center">
                 <div className="bg-gray-100 flex-col justify-center bg-white py-12 px-24 border-4 border-sky-900 rounded-xl">
                     <div className="block text-gray-700 text-lg font-bold my-2 pb-5 mb-5 ">
+                        {error && <Alert message={error} />}
                         <form
                             onSubmit={handleSubmit}
                             className=" border-2shadow-md rounded px-8 pt-6 pb-8 mb-4"

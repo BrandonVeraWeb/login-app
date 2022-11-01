@@ -1,11 +1,13 @@
 import React, { useState } from "react"
 import { getAuth, updatePassword, signOut } from "firebase/auth"
 import { Navigate, useNavigate } from "react-router-dom"
+import { Alert } from "./Alert"
 export function PasswordChange() {
     const navigate = useNavigate()
     const logout = () => signOut(auth)
     const [passwordNew, setPasswordNew] = useState()
     const [passwordConfirm, setPasswordConfirm] = useState()
+    const [error, setError] = useState()
     const handleChange = (e) => {
         setPasswordNew(e.target.value)
     }
@@ -23,11 +25,12 @@ export function PasswordChange() {
     const handleSubmit = (e) => {
         e.preventDefault()
         if (newPassword !== passwordConfirm) {
-            return alert("TUS PASSWORD NO SON IGUALES")
+            return setError("TUS PASSWORD NO SON IGUALES")
         }
         updatePassword(user, newPassword)
             .then(() => {
-                alert("passwordChange")
+                setError("passwordChange")
+                e.preventDefault()
                 try {
                     logout()
                 } catch (error) {
@@ -35,7 +38,7 @@ export function PasswordChange() {
                 }
             })
             .catch((error) => {
-                alert("no funciona")
+                setError("Tu Password debe tener 6 o mas caracteres ")
                 console.log(error)
             })
     }
@@ -46,6 +49,7 @@ export function PasswordChange() {
                 <div className="flex h-screen justify-center items-center">
                     <div className="bg-gray-100 flex-col justify-center bg-white py-12 px-24 border-4 border-sky-900 rounded-xl">
                         <div className="block text-gray-700 text-lg font-bold my-2 pb-5 mb-5 ">
+                            {error && <Alert message={error} />}
                             <form
                                 onSubmit={handleSubmit}
                                 className="bg-gray-100 border-2 shadow-md rounded px-8 pt-6 pb-8mb-4"
